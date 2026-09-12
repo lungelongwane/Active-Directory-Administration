@@ -33,7 +33,7 @@ Simulate a small enterprise domain environment end-to-end: deploy a domain contr
 |---|---|---|
 | Host machine | Hypervisor | Oracle VirtualBox |
 | VM 1 | Domain Controller | Windows Server (AD DS) |
-| VM 2 | Domain-joined client | Windows 10/11 |
+| VM 2 | Domain-joined client | Windows 10 |
 
 ```
 [ Host: Oracle VirtualBox ]
