@@ -38,7 +38,7 @@ Simulate a small enterprise domain environment end-to-end: deploy a domain contr
 ```
 [ Host: Oracle VirtualBox ]
         |
-        |-- VM 1: Windows Server  --> Domain Controller (AD DS + DNS)
+        |-- VM 1: Windows Server  --> Domain Controller (AD DS)
         |                              Domain: mydomain.com
         |
         |-- VM 2: Windows Client  --> Joined to mydomain.com, logs in as a
