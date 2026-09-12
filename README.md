@@ -71,7 +71,12 @@ Use the [`New-BulkADUsers.ps1`](scripts/New-BulkADUsers.ps1) script to provision
 Configure the Windows client VM to use the domain controller for DNS, join it to `mydomain.com`, and log in as one of the newly created domain users.
 
 ### 6. Verify & Test
-Confirm group policy application, name resolution, and that the provisioned users can authenticate and access the domain as expected.
+To confirm the Active Directory deployment and user provisioning were successful:
+
+1. **User Account Verification:** Refreshed Active Directory Users and Computers (`dsa.msc`) and verified all 18 accounts were present in `OU=Employees,DC=mydomain,DC=com`.
+2. **DNS & Network Connectivity:** Tested `ping mydomain.com` and `nslookup mydomain.com` from the Windows Client VM to verify DNS resolution via the Domain Controller.
+3. **Domain Authentication:** Logged into the Windows Client VM using the newly provisioned account `lungelo.ngwane` with the temporary password `_P@ssword1`.
+4. **First-Logon Password Reset:** Verified that Active Directory successfully enforced the password change prompt upon the initial logon attempt on the client machine.
 
 
 ## 📜 Scripts
