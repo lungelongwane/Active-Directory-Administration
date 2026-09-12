@@ -41,7 +41,7 @@ Simulate a small enterprise domain environment end-to-end: deploy a domain contr
         |-- VM 1: Windows Server  --> Domain Controller (AD DS + DNS)
         |                              Domain: mydomain.com
         |
-        |-- VM 2: Windows Client  --> Joined to corp.local, logs in as a
+        |-- VM 2: Windows Client  --> Joined to mydomain.com, logs in as a
                                        domain user created via PowerShell
 ```
 
