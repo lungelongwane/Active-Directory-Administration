@@ -18,6 +18,7 @@ identity management, DNS, DHCP and domain trust boundaries interact under the ho
 - [Lab Architecture](#-lab-architecture)
 - [Prerequisites](#-prerequisites)
 - [Steps](#-steps)
+- [Images](#-Images)
 - [Scripts](#-scripts)
 - [Skills Demonstrated](#-skills-demonstrated)
 
