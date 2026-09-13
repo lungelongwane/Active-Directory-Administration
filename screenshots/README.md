@@ -12,23 +12,23 @@
 </br>
 
 ### Network Configurations
-<p> ipconfig</br>
+<p><i>ipconfig</i></br>
 Ran this to confirm the VM's IP address, subnet mask, and default gateway were correctly assigned so it could communicate on the network.
 </p>
 <img width="1026" height="917" alt="image" src="https://github.com/user-attachments/assets/5d825a92-8742-4d95-8277-f4799e6cb019" />
 </br></br></br>
 
 <p> 
-Resolve-DnsName mydomain.local</br>
-nslookup mydomain.local</br>
+<i>Resolve-DnsName mydomain.local</i></br>
+<i>nslookup mydomain.local</i></br>
 Ran these to verify the VM could resolve the domain name to the domain controller's IP address, since DNS resolution has to work before a domain join can succeed.
 </p>
 <img width="887" height="303" alt="image" src="https://github.com/user-attachments/assets/330a9994-ea92-41c6-8830-d2f5f59f9d43" />
 </br></br></br>
 
 <p>
-Test-Connection -ComputerName mydomain.com -Count 4</br> 
-Test-NetConnection -ComputerName mydomain.com -Port 389</br>
+<i>Test-Connection -ComputerName mydomain.com -Count 4</i></br> 
+<i>Test-NetConnection -ComputerName mydomain.com -Port 389</i></br>
 Ran these to confirm the VM could reach the domain controller over the network and that the LDAP port (389) used for Active Directory communication was open and responding.
 </p>
 <img width="850" height="563" alt="image" src="https://github.com/user-attachments/assets/5602c1cb-d681-402b-87ef-98b22db02ec1" />
