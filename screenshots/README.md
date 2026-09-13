@@ -9,7 +9,7 @@
 <img width="1915" height="1005" alt="image" src="https://github.com/user-attachments/assets/1178c6ff-9132-4c42-9446-5d75dafd40a5" />
 
 ### Network Configurations
-<p> ipconfig 
+<p> ipconfig</br>
 Ran this to confirm the VM's IP address, subnet mask, and default gateway were correctly assigned so it could communicate on the network.
 </p>
 <img width="1026" height="917" alt="image" src="https://github.com/user-attachments/assets/5d825a92-8742-4d95-8277-f4799e6cb019" />
