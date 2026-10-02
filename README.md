@@ -1,14 +1,14 @@
 # Active Directory Administration — Home Lab
 
-A hands-on home lab project demonstrating core Active Directory administration skills: standing up a domain controller, structuring an organizational unit hierarchy, and provisioning users at scale with PowerShell.
+A hands-on Active Directory home lab demonstrating domain controller deployment, DNS-based domain connectivity, OU design, domain-joined client administration, and PowerShell-based user provisioning.
 
-Built in Oracle VirtualBox using Windows Server as a domain controller and a Windows client joined to the domain.
+Built with Oracle VirtualBox, Windows Server, and a Windows client.
 
-### 💡 Background & Motivation
+## 💡 Background & Motivation
 
-Having provided frontline Active Directory support in an Enterprise environment, I built this lab to bridge the gap between day-to-day administration and foundational infrastructure engineering. Supporting existing AD environments
-is essential, but building one from the ground up—from initial forest setup and OU architecture to automated PowerShell provisioning—provided a deeper, end-to-end understanding of how 
-identity management, DNS, DHCP and domain trust boundaries interact under the hood.
+Having provided frontline Active Directory support in an enterprise environment, I built this lab to strengthen my understanding of the infrastructure behind day-to-day identity and access administration.
+
+The lab focuses on practical administration tasks: deploying AD DS, designing an OU structure, provisioning users in bulk, joining a Windows client to the domain, and validating authentication and DNS connectivity.
 
 ---
 
@@ -17,77 +17,162 @@ identity management, DNS, DHCP and domain trust boundaries interact under the ho
 - [Objective](#-objective)
 - [Lab Architecture](#-lab-architecture)
 - [Prerequisites](#-prerequisites)
-- [Steps](#-steps)
-- [Screenshots](#-screenshots)
+- [Lab Steps](#-lab-steps)
+- [Bulk User Provisioning](#-bulk-user-provisioning)
+- [Validation & Testing](#-validation--testing)
 - [Scripts](#-scripts)
 - [Skills Demonstrated](#-skills-demonstrated)
+- [Notes](#-notes)
 
 ---
 
 ## 🎯 Objective
 
-Simulate a small enterprise domain environment end-to-end: deploy a domain controller, design an OU structure and bulk-provision user accounts with PowerShell — the same fundamentals used to onboard employees in a production Active Directory environment.
+Simulate a small enterprise Active Directory environment end-to-end:
+
+1. Deploy a Windows Server domain controller.
+2. Install and configure Active Directory Domain Services.
+3. Create an OU structure for users.
+4. Provision multiple user accounts with PowerShell.
+5. Join a Windows client to the domain.
+6. Validate DNS resolution, domain authentication, and first-logon password enforcement.
+
+---
 
 ## 🏗 Lab Architecture
 
 | Component | Role | Software |
 |---|---|---|
 | Host machine | Hypervisor | Oracle VirtualBox |
-| VM 1 | Domain Controller | Windows Server (AD DS) |
+| VM 1 | Domain Controller | Windows Server + AD DS |
 | VM 2 | Domain-joined client | Windows 10 |
 
-```
+```text
 [ Host: Oracle VirtualBox ]
         |
-        |-- VM 1: Windows Server  --> Domain Controller (AD DS)
-        |                              Domain: mydomain.com
+        |-- VM 1: Windows Server
+        |      └── Domain Controller
+        |          └── Active Directory Domain Services
         |
-        |-- VM 2: Windows Client  --> Joined to mydomain.com, logs in as a
-                                       domain user created via PowerShell
+        └-- VM 2: Windows Client
+               └── Joined to the AD domain
 ```
+
+The lab domain used in the original build is `mydomain.com`.
+
+---
 
 ## ✅ Prerequisites
 
 - [Oracle VirtualBox](https://www.virtualbox.org/)
-- Windows Server ISO (evaluation edition)
+- Windows Server evaluation ISO
 - Windows 10 ISO
-- 8GB+ RAM recommended on the host to run both VMs comfortably
+- 8 GB+ host RAM recommended when running both VMs
+- Active Directory Domain Services PowerShell module
 
+---
 
-## 🪜 Steps
+## 🪜 Lab Steps
 
-### 1. Installed & Configured the Windows Server VM
-Create the VM in VirtualBox, install Windows Server, assign a static IP and set the machine name.
+### 1. Install & Configure Windows Server
 
-### 2. Promoted to Domain Controller (AD DS)
-Install the Active Directory Domain Services role and promote the server to a domain controller, creating a new forest.
+Create the Windows Server VM in VirtualBox, install Windows Server, configure the server hostname, and assign a suitable static network configuration.
 
-### 3. Designed the OU Structure
-Create an organizational unit hierarchy to reflect a small company structure (`Employees`, `IT`, `Finance`), setting up the containers users will be provisioned into.
+### 2. Deploy Active Directory Domain Services
 
-### 4. Bulk-Created Users with PowerShell
-Use the [`New-BulkADUsers.ps1`](scripts/New-BulkADUsers.ps1) script to provision multiple user accounts from a CSV file in a single run — the same approach used for onboarding batches of employees.
+Install the AD DS role and promote the server to a domain controller, creating the lab forest/domain.
 
-### 5. Joined the Client VM to the Domain
-Configure the Windows client VM to use the domain controller for DNS, join it to `mydomain.com`, and log in as one of the newly created domain users.
+### 3. Create the OU Structure
 
-### 6. Verify & Test
-To confirm the Active Directory deployment and user provisioning were successful:
+Create the `Employees` OU used by the provisioning script.
 
-1. **User Account Verification:** Refreshed Active Directory Users and Computers (`dsa.msc`) and verified all 18 accounts were present in `OU=Employees,DC=mydomain,DC=com`.
-2. **DNS & Network Connectivity:** Tested `ping mydomain.com` and `nslookup mydomain.com` from the Windows Client VM to verify DNS resolution via the Domain Controller.
-3. **Domain Authentication:** Logged into the Windows Client VM using the newly provisioned account `lungelo.ngwane` with the temporary password `_P@ssword1`.
-4. **First-Logon Password Reset:** Verified that Active Directory successfully enforced the password change prompt upon the initial logon attempt on the client machine.
+> The repository documents the OU structure that is actually used by the automation rather than claiming additional OUs that are not required by the script.
 
+### 4. Bulk-Provision Users with PowerShell
+
+Use [`New-BulkADUsers.ps1`](scripts/New-BulkADUsers.ps1) to import user names from [`data/users.csv`](data/users.csv) and create accounts in the target OU.
+
+The script:
+
+- Imports user data from CSV.
+- Validates the CSV structure.
+- Verifies that the target OU exists.
+- Checks whether each SAM account name already exists.
+- Prompts for a temporary password instead of storing one in the repository.
+- Creates enabled accounts.
+- Requires users to change the temporary password at first logon.
+- Reports created and skipped accounts.
+
+### 5. Join the Windows Client to the Domain
+
+Configure the Windows client to use the domain controller for DNS, join it to the lab domain, and authenticate with a provisioned domain account.
+
+### 6. Validate the Environment
+
+The original lab validation included:
+
+1. **User account verification:** Confirmed the provisioned accounts in Active Directory Users and Computers (`dsa.msc`).
+2. **DNS and connectivity:** Used `ping` and `nslookup` against the lab domain from the Windows client.
+3. **Domain authentication:** Logged into the client using a provisioned domain account.
+4. **First-logon password change:** Confirmed that the initial password-change requirement was enforced.
+
+---
+
+## 📦 Bulk User Provisioning
+
+### CSV format
+
+The provisioning input uses a simple two-column structure:
+
+```csv
+FirstName,LastName
+Example,User
+Another,User
+```
+
+The included [`data/users.csv`](data/users.csv) contains sample lab users.
+
+### Run the script
+
+From PowerShell on the domain controller or an authorised management workstation:
+
+```powershell
+.\scripts\New-BulkADUsers.ps1 `
+    -CsvPath .\data\users.csv `
+    -DomainName mydomain.com `
+    -TargetOU "OU=Employees,DC=mydomain,DC=com"
+```
+
+The script prompts for the temporary password at runtime. No password is stored in the repository.
+
+---
 
 ## 📜 Scripts
 
-| Script | Purpose |
+| File | Purpose |
 |---|---|
-| [`New-BulkADUsers.ps1`](scripts/New-BulkADUsers.ps1) | Bulk-creates AD user accounts, assigns them to an OU, sets a default password and forces a password change at first logon |
+| [`scripts/New-BulkADUsers.ps1`](scripts/New-BulkADUsers.ps1) | Validates CSV input and bulk-creates AD user accounts in the target OU |
+| [`data/users.csv`](data/users.csv) | Sample user provisioning data for the lab |
 
+---
 
 ## 🧠 Skills Demonstrated
 
-Windows Server Administration · Active Directory Domain Services · DNS · DHCP · Organizational Unit design · Group Policy fundamentals · PowerShell scripting · User lifecycle management · virtualization
+- Windows Server administration
+- Active Directory Domain Services (AD DS)
+- Active Directory Users and Computers
+- Organizational Unit design
+- DNS and domain connectivity
+- Domain-joined Windows client administration
+- PowerShell automation
+- Bulk user provisioning
+- User lifecycle administration
+- Virtualisation with Oracle VirtualBox
 
+---
+
+## 📝 Notes
+
+This repository represents a controlled home-lab environment. Domain names, user data, and infrastructure settings are intentionally simplified for demonstration and learning.
+
+The provisioning script is designed for lab and controlled administrative environments. Production deployments should use an organisation's approved identity-management process, credential-management controls, naming standards, and delegated permissions.
