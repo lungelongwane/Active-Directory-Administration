@@ -22,6 +22,7 @@ The lab focuses on practical administration tasks: deploying AD DS, designing an
 - [Validation & Testing](#-validation--testing)
 - [Scripts](#-scripts)
 - [Skills Demonstrated](#-skills-demonstrated)
+- [Knowledge Base](#-knowledge-base)
 - [Notes](#-notes)
 
 ---
@@ -168,6 +169,23 @@ The script prompts for the temporary password at runtime. No password is stored 
 - Bulk user provisioning
 - User lifecycle administration
 - Virtualisation with Oracle VirtualBox
+
+---
+
+## 📚 Knowledge Base
+
+The repository includes a practical knowledge base covering the administration concepts and troubleshooting workflow demonstrated by the lab.
+
+| Guide | Focus |
+|---|---|
+| [01 — Domain Controller Setup](docs/01-domain-controller.md) | Windows Server and AD DS deployment |
+| [02 — Active Directory Administration](docs/02-active-directory.md) | Domains, OUs, users and administration commands |
+| [03 — DNS & Domain Connectivity](docs/03-dns-and-domain-connectivity.md) | DNS validation and domain connectivity |
+| [04 — User Provisioning](docs/04-user-provisioning.md) | CSV-driven PowerShell provisioning |
+| [05 — PowerShell Administration](docs/05-powershell.md) | AD PowerShell commands and automation principles |
+| [06 — Troubleshooting](docs/06-troubleshooting.md) | Practical AD, DNS, domain-join and authentication checks |
+
+The knowledge base is intentionally tied to the lab implementation rather than presenting unsupported production experience.
 
 ---
 
